@@ -3,7 +3,7 @@
 	"type": "commonjs",
 	"scripts": {
 		"start:build": "pnpm tsc -w",
-		"start:prod": "tsc && node dist/index.js",
+		"start:prod": "node dist/index.js",
 		"start:compiler": "nodemon ./dist/index.js",
 		"start:client": "cd .. && cd client && pnpm start",
 		"start": "concurrently pnpm:start:*"
