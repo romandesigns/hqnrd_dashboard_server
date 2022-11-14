@@ -1,12 +1,20 @@
 import { Request, Response } from "express";
-import { ReservationModel } from "../models";
+import { ReservationModel, RoomModel } from "../models";
 import validateObjectId from "../utils/validateId";
 
 // @route   GET api/reservations
 const getAll = async (_req: Request, res: Response) => {
 	try {
-		const reservations = await ReservationModel.find({}).populate("accompanies").populate("guest", "-password");
+		const reservations = await ReservationModel.find({})
+			.populate("roomId")
+			.populate({
+				path: "guest",
+				select: "-password",
+				populate: [{ path: "currentReservations" }, { path: "pastReservations" }],
+			});
+		console.log(reservations);
 		if (!reservations.length) return res.status(200).json({ success: true, message: "No reservations found", data: [] });
+
 		return res.status(200).json({ success: true, message: "", data: reservations });
 	} catch ({ message }) {
 		return res.status(500).json({ message });

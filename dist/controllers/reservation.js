@@ -48,9 +48,16 @@ var getAll = function (_req, res) { return __awaiter(void 0, void 0, void 0, fun
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, models_1.ReservationModel.find({}).populate("accompanies").populate("guest", "-password")];
+                return [4 /*yield*/, models_1.ReservationModel.find({})
+                        .populate("roomId")
+                        .populate({
+                        path: "guest",
+                        select: "-password",
+                        populate: [{ path: "currentReservations" }, { path: "pastReservations" }],
+                    })];
             case 1:
                 reservations = _b.sent();
+                console.log(reservations);
                 if (!reservations.length)
                     return [2 /*return*/, res.status(200).json({ success: true, message: "No reservations found", data: [] })];
                 return [2 /*return*/, res.status(200).json({ success: true, message: "", data: reservations })];

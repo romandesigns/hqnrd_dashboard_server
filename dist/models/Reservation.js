@@ -9,6 +9,10 @@ var ReservationSchema = new mongoose_1.default.Schema({
         type: Number,
         required: true,
     },
+    roomId: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Room",
+    },
     unit: { type: Number, required: true },
     unitPrice: { type: Number, required: true },
     adults: {
