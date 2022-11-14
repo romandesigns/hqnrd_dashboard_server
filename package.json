@@ -6,7 +6,7 @@
 		"start:prod": "node dist/index.js",
 		"start:compiler": "nodemon ./dist/index.js",
 		"start:client": "cd .. && cd client && pnpm start",
-		"start": "concurrently pnpm:start:*"
+		"start": "concurrently \"pnpm start:client\" \"pnpm start:compiler\""
 	},
 	"dependencies": {
 		"@types/bson": "^4.2.0",
