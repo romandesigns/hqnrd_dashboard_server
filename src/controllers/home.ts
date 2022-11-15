@@ -6,9 +6,8 @@ import validateObjectId from "../utils/validateId";
 const getAll = async (_req: Request, res: Response) => {
 	try {
 		const home = await HomeModel.find({});
-		if (!home._id) return res.status(200).json({ success: true, message: "No Data found", data: {} });
-
-		return res.status(200).json({ success: true, message: "", data: reservations });
+		if (!home) return res.status(200).json({ success: true, message: "No Data found", data: {} });
+		return res.status(200).json({ success: true, message: "", data: home.length ? home[0] : {} });
 	} catch ({ message }) {
 		return res.status(500).json({ message });
 	}
@@ -20,9 +19,9 @@ const get = async (req: Request, res: Response) => {
 		if (!validateObjectId(req.params.id)) {
 			return res.status(400).json({ success: false, message: "reservation ID is not valid", data: "" });
 		}
-		const reservation = await ReservationModel.findOne({ _id: req.params.id }).populate("accompanies").populate("guest", "-password");
-		if (!reservation) return res.status(200).json({ success: true, message: "No reservation found", data: "" });
-		return res.status(200).json({ success: true, message: "", data: reservation });
+		const home = await HomeModel.findOne({ _id: req.params.id }).populate("accompanies").populate("guest", "-password");
+		if (!home) return res.status(200).json({ success: true, message: "No reservation found", data: "" });
+		return res.status(200).json({ success: true, message: "", data: home });
 	} catch ({ message }) {
 		return res.status(500).json({ success: false, message: "Error found", data: message });
 	}
@@ -34,11 +33,9 @@ const update = async (req: Request, res: Response) => {
 		if (!validateObjectId(req.params.id)) {
 			return res.status(400).json({ success: false, message: "reservation ID is not valid", data: "" });
 		}
-		const reservation = await ReservationModel.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-			.populate("accompanies")
-			.populate("guest", "-password");
-		if (!reservation) return res.status(200).json({ success: true, message: "No reservation found", data: "" });
-		return res.status(200).json({ success: true, message: "Reservation ha sido actualizada", data: reservation });
+		const home = await HomeModel.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }).populate("accompanies").populate("guest", "-password");
+		if (!home) return res.status(200).json({ success: true, message: "No home found", data: "" });
+		return res.status(200).json({ success: true, message: "Home ha sido actualizada", data: home });
 	} catch ({ message }) {
 		return res.status(500).json({ success: false, message: "Error found", data: message });
 	}
@@ -50,9 +47,9 @@ const eliminate = async (req: Request, res: Response) => {
 		if (!validateObjectId(req.params.id)) {
 			return res.status(400).json({ success: false, message: "Reservation ID is not valid", data: "" });
 		}
-		const reservation = await ReservationModel.findOneAndDelete({ _id: req.params.id });
-		if (!reservation) return res.status(200).json({ success: true, message: "No reservation found", data: "" });
-		return res.status(200).json({ success: true, message: "Reservation has been deleted", data: reservation });
+		const home = await HomeModel.findOneAndDelete({ _id: req.params.id });
+		if (!home) return res.status(200).json({ success: true, message: "No home found", data: "" });
+		return res.status(200).json({ success: true, message: "Home has been deleted", data: home });
 	} catch ({ message }) {
 		return res.status(500).json({ success: false, message: "Error found", data: message });
 	}

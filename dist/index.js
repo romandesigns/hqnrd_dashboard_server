@@ -14,8 +14,13 @@ var http_1 = __importDefault(require("http"));
 var socket_io_1 = require("socket.io");
 // Instantiations
 var app = (0, express_1.default)();
-var server = http_1.default.createServer(app);
-var io = new socket_io_1.Server(server);
+var httpServer = http_1.default.createServer(app);
+var io = new socket_io_1.Server(httpServer, {
+    //@ts-ignore
+    cors: {
+        origin: "http://localhost:3000",
+    },
+});
 dotenv_1.default.config();
 (0, db_1.default)();
 (0, morgan_1.default)("tiny");
@@ -33,6 +38,9 @@ var home_1 = __importDefault(require("./routes/home"));
 // Routes
 app.use("/api/reservations", reservations_1.default);
 app.use("/api/home", home_1.default);
+io.on("connection", function (socket) {
+    console.log("a user connected");
+});
 // Server
-server.listen(PORT, function () { return console.log("\uD83D\uDD25 Server running on port ".concat(PORT)); });
+httpServer.listen(PORT, function () { return console.log("\uD83D\uDD25 Server running on port ".concat(PORT)); });
 //# sourceMappingURL=index.js.map

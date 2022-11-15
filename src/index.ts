@@ -10,8 +10,36 @@ import { Server } from "socket.io";
 
 // Instantiations
 const app: Application = express();
-const server = http.createServer(app);
-const io = new Server(server);
+const httpServer = http.createServer(app);
+
+interface ServerToClientEvents {
+	noArg: () => void;
+	basicEmit: (a: number, b: string, c: Buffer) => void;
+	withAck: (d: string, callback: (e: number) => void) => void;
+}
+
+interface ClientToServerEvents {
+	hello: () => void;
+}
+
+interface InterServerEvents {
+	ping: () => void;
+}
+
+interface SocketData {
+	name: string;
+	age: number;
+	cors: {
+		origin: string;
+	};
+}
+
+const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(httpServer, {
+	//@ts-ignore
+	cors: {
+		origin: "http://localhost:3000",
+	},
+});
 
 dotenv.config();
 databaseConnection();
@@ -35,5 +63,9 @@ import homeApi from "./routes/home";
 app.use("/api/reservations", reservationsApi);
 app.use("/api/home", homeApi);
 
+io.on("connection", function (socket) {
+	console.log("a user connected");
+});
+
 // Server
-server.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));
+httpServer.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));

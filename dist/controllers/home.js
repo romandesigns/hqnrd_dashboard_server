@@ -51,9 +51,9 @@ var getAll = function (_req, res) { return __awaiter(void 0, void 0, void 0, fun
                 return [4 /*yield*/, models_1.HomeModel.find({})];
             case 1:
                 home = _b.sent();
-                if (!home._id)
+                if (!home)
                     return [2 /*return*/, res.status(200).json({ success: true, message: "No Data found", data: {} })];
-                return [2 /*return*/, res.status(200).json({ success: true, message: "", data: reservations })];
+                return [2 /*return*/, res.status(200).json({ success: true, message: "", data: home.length ? home[0] : {} })];
             case 2:
                 _a = _b.sent();
                 message = _a.message;
@@ -64,7 +64,7 @@ var getAll = function (_req, res) { return __awaiter(void 0, void 0, void 0, fun
 }); };
 // Get a reservation
 var get = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var reservation, _a, message;
+    var home, _a, message;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -72,12 +72,12 @@ var get = function (req, res) { return __awaiter(void 0, void 0, void 0, functio
                 if (!(0, validateId_1.default)(req.params.id)) {
                     return [2 /*return*/, res.status(400).json({ success: false, message: "reservation ID is not valid", data: "" })];
                 }
-                return [4 /*yield*/, ReservationModel.findOne({ _id: req.params.id }).populate("accompanies").populate("guest", "-password")];
+                return [4 /*yield*/, models_1.HomeModel.findOne({ _id: req.params.id }).populate("accompanies").populate("guest", "-password")];
             case 1:
-                reservation = _b.sent();
-                if (!reservation)
+                home = _b.sent();
+                if (!home)
                     return [2 /*return*/, res.status(200).json({ success: true, message: "No reservation found", data: "" })];
-                return [2 /*return*/, res.status(200).json({ success: true, message: "", data: reservation })];
+                return [2 /*return*/, res.status(200).json({ success: true, message: "", data: home })];
             case 2:
                 _a = _b.sent();
                 message = _a.message;
@@ -88,7 +88,7 @@ var get = function (req, res) { return __awaiter(void 0, void 0, void 0, functio
 }); };
 // Update reservation
 var update = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var reservation, _a, message;
+    var home, _a, message;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -96,14 +96,12 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 if (!(0, validateId_1.default)(req.params.id)) {
                     return [2 /*return*/, res.status(400).json({ success: false, message: "reservation ID is not valid", data: "" })];
                 }
-                return [4 /*yield*/, ReservationModel.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-                        .populate("accompanies")
-                        .populate("guest", "-password")];
+                return [4 /*yield*/, models_1.HomeModel.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }).populate("accompanies").populate("guest", "-password")];
             case 1:
-                reservation = _b.sent();
-                if (!reservation)
-                    return [2 /*return*/, res.status(200).json({ success: true, message: "No reservation found", data: "" })];
-                return [2 /*return*/, res.status(200).json({ success: true, message: "Reservation ha sido actualizada", data: reservation })];
+                home = _b.sent();
+                if (!home)
+                    return [2 /*return*/, res.status(200).json({ success: true, message: "No home found", data: "" })];
+                return [2 /*return*/, res.status(200).json({ success: true, message: "Home ha sido actualizada", data: home })];
             case 2:
                 _a = _b.sent();
                 message = _a.message;
@@ -114,7 +112,7 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
 }); };
 // Delete a reservation
 var eliminate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var reservation, _a, message;
+    var home, _a, message;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -122,12 +120,12 @@ var eliminate = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 if (!(0, validateId_1.default)(req.params.id)) {
                     return [2 /*return*/, res.status(400).json({ success: false, message: "Reservation ID is not valid", data: "" })];
                 }
-                return [4 /*yield*/, ReservationModel.findOneAndDelete({ _id: req.params.id })];
+                return [4 /*yield*/, models_1.HomeModel.findOneAndDelete({ _id: req.params.id })];
             case 1:
-                reservation = _b.sent();
-                if (!reservation)
-                    return [2 /*return*/, res.status(200).json({ success: true, message: "No reservation found", data: "" })];
-                return [2 /*return*/, res.status(200).json({ success: true, message: "Reservation has been deleted", data: reservation })];
+                home = _b.sent();
+                if (!home)
+                    return [2 /*return*/, res.status(200).json({ success: true, message: "No home found", data: "" })];
+                return [2 /*return*/, res.status(200).json({ success: true, message: "Home has been deleted", data: home })];
             case 2:
                 _a = _b.sent();
                 message = _a.message;
