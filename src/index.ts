@@ -5,9 +5,13 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import databaseConnection from "./db";
 import helmet from "helmet";
+import http from "http";
+import { Server } from "socket.io";
 
 // Instantiations
 const app: Application = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 dotenv.config();
 databaseConnection();
@@ -24,10 +28,12 @@ app.use(express.static("client/build"));
 
 // If no API routes are hit, send the React app
 // Imported Routes
-import reservations from "./routes/reservations";
+import reservationsApi from "./routes/reservations";
+import homeApi from "./routes/home";
 
 // Routes
-app.use("/api/reservations", reservations);
+app.use("/api/reservations", reservationsApi);
+app.use("/api/home", homeApi);
 
 // Server
-app.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));

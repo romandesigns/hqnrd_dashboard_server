@@ -79,8 +79,8 @@ var UserSchema = new mongoose_1.default.Schema({
     logInInterface: [{ date: Date }],
 }, { timestamps: true });
 var UserModel = mongoose_1.default.models.User || mongoose_1.default.model("User", UserSchema);
-UserModel.watch().once("change", function (data) {
-    console.log(data);
-});
+// UserModel.watch().once("change", (data: UserDocumenTypes) => {
+// 	console.log(data);
+// });
 exports.default = UserModel;
 //# sourceMappingURL=User.js.map

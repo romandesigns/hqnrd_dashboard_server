@@ -86,7 +86,7 @@ const UserSchema = new mongoose.Schema(
 );
 
 const UserModel = mongoose.models.User || mongoose.model("User", UserSchema);
-UserModel.watch().once("change", (data: UserDocumenTypes) => {
-	console.log(data);
-});
+// UserModel.watch().once("change", (data: UserDocumenTypes) => {
+// 	console.log(data);
+// });
 export default UserModel;

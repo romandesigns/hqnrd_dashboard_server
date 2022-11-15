@@ -1,18 +1,12 @@
 import { Request, Response } from "express";
-import { ReservationModel } from "../models";
+import { HomeModel } from "../models";
 import validateObjectId from "../utils/validateId";
 
 // @route   GET api/reservations
 const getAll = async (_req: Request, res: Response) => {
 	try {
-		const reservations = await ReservationModel.find({})
-			.populate("roomId")
-			.populate({
-				path: "guest",
-				select: "-password",
-				populate: [{ path: "currentReservations" }, { path: "pastReservations" }],
-			});
-		if (!reservations.length) return res.status(200).json({ success: true, message: "No reservations found", data: [] });
+		const home = await HomeModel.find({});
+		if (!home._id) return res.status(200).json({ success: true, message: "No Data found", data: {} });
 
 		return res.status(200).json({ success: true, message: "", data: reservations });
 	} catch ({ message }) {

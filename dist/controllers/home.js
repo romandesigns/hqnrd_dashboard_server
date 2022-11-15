@@ -43,22 +43,16 @@ var models_1 = require("../models");
 var validateId_1 = __importDefault(require("../utils/validateId"));
 // @route   GET api/reservations
 var getAll = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var reservations, _a, message;
+    var home, _a, message;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, models_1.ReservationModel.find({})
-                        .populate("roomId")
-                        .populate({
-                        path: "guest",
-                        select: "-password",
-                        populate: [{ path: "currentReservations" }, { path: "pastReservations" }],
-                    })];
+                return [4 /*yield*/, models_1.HomeModel.find({})];
             case 1:
-                reservations = _b.sent();
-                if (!reservations.length)
-                    return [2 /*return*/, res.status(200).json({ success: true, message: "No reservations found", data: [] })];
+                home = _b.sent();
+                if (!home._id)
+                    return [2 /*return*/, res.status(200).json({ success: true, message: "No Data found", data: {} })];
                 return [2 /*return*/, res.status(200).json({ success: true, message: "", data: reservations })];
             case 2:
                 _a = _b.sent();
@@ -78,7 +72,7 @@ var get = function (req, res) { return __awaiter(void 0, void 0, void 0, functio
                 if (!(0, validateId_1.default)(req.params.id)) {
                     return [2 /*return*/, res.status(400).json({ success: false, message: "reservation ID is not valid", data: "" })];
                 }
-                return [4 /*yield*/, models_1.ReservationModel.findOne({ _id: req.params.id }).populate("accompanies").populate("guest", "-password")];
+                return [4 /*yield*/, ReservationModel.findOne({ _id: req.params.id }).populate("accompanies").populate("guest", "-password")];
             case 1:
                 reservation = _b.sent();
                 if (!reservation)
@@ -102,7 +96,7 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 if (!(0, validateId_1.default)(req.params.id)) {
                     return [2 /*return*/, res.status(400).json({ success: false, message: "reservation ID is not valid", data: "" })];
                 }
-                return [4 /*yield*/, models_1.ReservationModel.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+                return [4 /*yield*/, ReservationModel.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
                         .populate("accompanies")
                         .populate("guest", "-password")];
             case 1:
@@ -128,7 +122,7 @@ var eliminate = function (req, res) { return __awaiter(void 0, void 0, void 0, f
                 if (!(0, validateId_1.default)(req.params.id)) {
                     return [2 /*return*/, res.status(400).json({ success: false, message: "Reservation ID is not valid", data: "" })];
                 }
-                return [4 /*yield*/, models_1.ReservationModel.findOneAndDelete({ _id: req.params.id })];
+                return [4 /*yield*/, ReservationModel.findOneAndDelete({ _id: req.params.id })];
             case 1:
                 reservation = _b.sent();
                 if (!reservation)
@@ -148,4 +142,4 @@ exports.default = {
     update: update,
     eliminate: eliminate,
 };
-//# sourceMappingURL=reservation.js.map
+//# sourceMappingURL=home.js.map

@@ -3,10 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReservationModel = exports.RoomModel = exports.ImageModel = exports.UserModel = void 0;
+exports.HomeModel = exports.ReservationModel = exports.RoomModel = exports.ImageModel = exports.UserModel = void 0;
 // User Model
 var User_1 = __importDefault(require("./User"));
 exports.UserModel = User_1.default;
+var Home_1 = __importDefault(require("./Home"));
+exports.HomeModel = Home_1.default;
 var Image_1 = __importDefault(require("./Image"));
 exports.ImageModel = Image_1.default;
 var Room_1 = __importDefault(require("./Room"));
